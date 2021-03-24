@@ -44,12 +44,22 @@ function setup() {
 function draw() {
   background(46,139,87);
   drawSprites();
-  feedDog();
-  getFoodStock();
-  updateFoodStock();
-  addFoods();
-  getLastFed();
-
+  // feedDog();
+  // getFoodStock();
+  // updateFoodStock();
+  // addFoods();
+  // getLastFed();
+  
+  if(lastFed>=12){
+    textSize(16);
+    text("Last Fed: " + lastFed + "AM", 200, 30);
+  }else if(lastFed == 0){
+    textSize(16);
+    text("Last Fed: 12AM", 200, 30);
+  }else{
+    textSize(16);
+    text("Last Fed: " + lastFed + "PM", 200, 30);
+  }
 
   foodObj.display();
 
@@ -59,15 +69,17 @@ function feedDog(){
   dog.addImage(happyDog)
 
   feedBottle.visible = true;
-  // if(feedDog.mousePressed || foodObj.foodStock != 0){
-  // image(foodObj.image, 600, 100, 70, 80);
-  // }
+  if(feedDog.mousePressed || foodObj.foodStock != 0){
+  image(foodObj.image, 600, 100, 70, 80);
+  }
 
   if(foodObj.getFoodStock() <= 0){
     foodObj.updateFoodStock(foodObj.getFoodStock()*0);
   }else{
     foodObj.updateFoodStock(foodObj.getFoodStock()-1);
   }
+
+  lastFed = hour();
 }
 
 //function to read food Stock
@@ -94,8 +106,14 @@ function addFoods(){
 }
 
   function getLastFed(){
-    var lastFedRef = database.ref('lastFed');
+    var lastFedRef = database.ref('/lastFed');
     lastFedRef.on("value", function (data){
        lastFed = data.val();
   });
 }
+
+  function updateLastFed(){
+    database.ref('/').update({
+      lastFed: lastFed
+  });
+  }
