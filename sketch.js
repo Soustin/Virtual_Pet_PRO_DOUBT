@@ -57,7 +57,7 @@ function draw() {
     lastFed=data.val();
   });
   
-  if(lastFed>=12){
+  if(lastFed<=12){
     textSize(16);
     text("Last Fed: " + lastFed + "AM", 200, 30);
   }else if(lastFed == 0){
@@ -73,8 +73,8 @@ function draw() {
 
 
 function readStock(data){
-  foodstock=data.val();
-  foodObj.updateFoodStock(foodstock);
+  var foods = data.val();
+  foodObj.updateFoodStock(foods);
 }
 
 function feedDog(){
@@ -120,6 +120,7 @@ function addFoods(){
     Food : foods
   })
   feedBottle.visible = false;
+  // foodObj.display();
 }
 
   // function getLastFed(){
