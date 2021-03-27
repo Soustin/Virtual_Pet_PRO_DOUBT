@@ -40,8 +40,6 @@ function setup() {
   // addFood.style('font-size', );
   addFood.mousePressed(addFoods);
 
-
-
 }
 
 function draw() {
@@ -51,11 +49,11 @@ function draw() {
   // updateFoodStock();
   // addFoods();
   // getLastFed();
-  
+
   foodObj.display();
 
-  fedTime=database.ref('FeedTime');
-  fedTime.on("value",function(data){
+  var fedTime = database.ref('FeedTime');
+    fedTime.on("value",function(data){
     lastFed=data.val();
   });
   
@@ -73,13 +71,20 @@ function draw() {
   drawSprites();
 }
 
+
+function readStock(data){
+  foodstock=data.val();
+  foodObj.updateFoodStock(foodstock);
+}
+
 function feedDog(){
   dog.addImage(happyDog)
 
   feedBottle.visible = true;
-  if(feedDog.mousePressed || foodObj.foodStock != 0){
-  image(foodObj.image, 600, 100, 70, 80);
-  }
+
+  // if(feedDog.mousePressed || foodObj.foodStock != 0){
+  // image(foodObj.image, 600, 100, 70, 80);
+  // }
 
   if(foodObj.getFoodStock() <= 0){
     foodObj.updateFoodStock(foodObj.getFoodStock()*0);
@@ -87,41 +92,45 @@ function feedDog(){
     foodObj.updateFoodStock(foodObj.getFoodStock()-1);
   }
 
-  lastFed = hour();
-}
-
-//function to read food Stock
-function getFoodStock(){
-  var foodStockRef = database.ref('addFood');
-  foodStockRef.on("value", function (data){
-      foodStock = data.val();
+  database.ref('/').update({
+    Food:foodObj.getFoodStock(),
+    FeedTime:hour()
   })
 }
 
-//function to update food stock and last fed time
-function updateFoodStock(){
-  database.ref('/').update({
-    foodStock: foodStock
-});
-}
+// //function to read food Stock
+// function getFoodStock(){
+//   var foodStockRef = database.ref('addFood');
+//   foodStockRef.on("value", function (data){
+//       foodStock = data.val();
+//   })
+// }
+
+// //function to update food stock and last fed time
+// function updateFoodStock(){
+//   database.ref('/').update({
+//     foodStock: foodStock
+// });
+// }
 
 //function to add food in stock
-function addFoods(){
-  foodObj.foodStock++;
-  database.ref('addFood').update({
-    Food:foodObj.foodStock
+function addFoods(){   
+  foods++;
+  database.ref('/').update({
+    Food : foods
   })
+  feedBottle.visible = false;
 }
 
-  function getLastFed(){
-    var lastFedRef = database.ref('/lastFed');
-    lastFedRef.on("value", function (data){
-       lastFed = data.val();
-  });
-}
+  // function getLastFed(){
+  //   var lastFedRef = database.ref('lastFed');
+  //           LastFedRef.on("value", function (data){
+  //           lastFed = data.val();
+  //     });
+  //   }
 
-  function updateLastFed(){
-    database.ref('/').update({
-      lastFed: lastFed
-  });
-  }
+  // function updateLastFed(){
+  //   database.ref('/').update({
+  //     lastFed: lastFed
+  // });
+  // }

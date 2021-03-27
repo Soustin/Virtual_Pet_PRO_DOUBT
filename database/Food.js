@@ -5,6 +5,7 @@ class Food {
         this.image = loadImage("Images/Milk.png")
     }
 
+    //function to update food stock and last fed time
     updateFoodStock(foodStock){
         this.foodStock = foodStock;
     }
@@ -13,19 +14,29 @@ class Food {
         this.lastFed = lastFed;
     }
 
+    //   function getLastFed(){
+// }
+
+//   function updateLastFed(){
+//     database.ref('/').update({
+//       lastFed: lastFed
+//   });
+//   }
+
     deductFood(){
         if(this.foodStock>0){
             this.foodStock = this.foodStock-1;
         }
     }
 
+    // function to read food Stock
     getFoodStock(){
         // var foodStockRef = database.ref('addFood');
-        // foodStockRef.on("value", function (data){
+        //     foodStockRef.on("value", function (data){
         //     this.foodStock = data.val();
         // })
-        return this.foodStock;
-    }
+            return this.foodStock;
+        }
 
     display(){
         var x = 80, y = 100;
