@@ -19,6 +19,9 @@ function setup() {
   // foodObj.getfedTime();
   // foodObj.deductFood();
   
+  foodStock=database.ref('Food');
+  foodStock.on("value",readStock);
+
   dog=createSprite(800,200,150,150);
   dog.addImage(sadDog);
   dog.scale=0.15;
@@ -32,7 +35,7 @@ function setup() {
   feed.position(600, 100);
   feed.mousePressed(feedDog);
 
-  var addFood = createButton("Add Food For Him ");
+  var addFood = createButton("Add Food For Him");
   addFood.position(680, 100);
   // addFood.style('font-size', );
   addFood.mousePressed(addFoods);
@@ -43,12 +46,18 @@ function setup() {
 
 function draw() {
   background(46,139,87);
-  drawSprites();
   // feedDog();
   // getFoodStock();
   // updateFoodStock();
   // addFoods();
   // getLastFed();
+  
+  foodObj.display();
+
+  fedTime=database.ref('FeedTime');
+  fedTime.on("value",function(data){
+    lastFed=data.val();
+  });
   
   if(lastFed>=12){
     textSize(16);
@@ -61,8 +70,7 @@ function draw() {
     text("Last Fed: " + lastFed + "PM", 200, 30);
   }
 
-  foodObj.display();
-
+  drawSprites();
 }
 
 function feedDog(){
