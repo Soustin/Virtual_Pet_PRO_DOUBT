@@ -69,6 +69,9 @@ function draw() {
   }
 
   drawSprites();
+  readStock();
+  feedDog();
+  addFoods();
 }
 
 
